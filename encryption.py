@@ -1,5 +1,4 @@
 import numpy as np
-import time
 
 IP = [3, 13, 4, 9,
       8, 5, 0, 1,
