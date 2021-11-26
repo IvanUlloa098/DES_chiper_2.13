@@ -60,7 +60,7 @@ def E_box(right):
     
     return expanded
 
-def sboxloopup(sinput,x):
+def substitution(sinput,x):
     tableno = x - 1
     row = int((np.array2string(sinput[0]) + np.array2string(sinput[2])),2)
 
@@ -74,18 +74,18 @@ def sboxloopup(sinput,x):
     soutput = list(np.binary_repr(soutput, width=2))
     return soutput
 
-def sbox(sboxin):
-    sboxin1 = sboxin[0:3]
-    sboxout1 = sboxloopup(sboxin1, 1)
-    sboxin2 = sboxin[3:6]
-    sboxout2 = sboxloopup(sboxin2, 1)
-    sboxin3 = sboxin[6:9]
-    sboxout3 = sboxloopup(sboxin3, 1)
-    sboxin4 = sboxin[9:12]
-    sboxout4 = sboxloopup(sboxin4, 1)
+def sbox(sbox_in_):
+    sbox_in_1 = sbox_in_[0:3]
+    sbox_out_1 = substitution(sbox_in_1, 1)
+    sbox_in_2 = sbox_in_[3:6]
+    sbox_out_2 = substitution(sbox_in_2, 1)
+    sbox_in_3 = sbox_in_[6:9]
+    sbox_out_3 = substitution(sbox_in_3, 1)
+    sbox_in_4 = sbox_in_[9:12]
+    sbox_out_4 = substitution(sbox_in_4, 1)
     
-    sboxout = np.concatenate([sboxout1,sboxout2,sboxout3,sboxout4])
-    return sboxout
+    sbox_result = np.concatenate([sbox_out_1,sbox_out_2,sbox_out_3,sbox_out_4])
+    return sbox_result
 
 def f_permute(topermute):
     permuted= np.empty(8)
@@ -104,7 +104,7 @@ def f_function(right,rkey):
 
     return xorstream
 
-def round(data,rkey):
+def des_encription(data,rkey):
     l0 = data[0:8]
     r0 = data[8:16]
 
@@ -113,10 +113,10 @@ def round(data,rkey):
     r1 = xor(l0,xorstream)
     l1 = r0
 
-    returndata = np.empty_like(data)
-    returndata[0:8] = l1
-    returndata[8:16] = r1
-    return(returndata)
+    result = np.empty_like(data)
+    result[0:8] = l1
+    result[8:16] = r1
+    return(result)
 
 def permutation(data,x):
     permute1 = np.empty_like(IP)
@@ -142,18 +142,18 @@ def main():
     rkey = list(map(int, key))
     print(data,rkey)
 
-    operate = int(input("0 encriptar, 1 desencriptar "))
+    option = int(input("0 encriptar, 1 desencriptar >>"))
 
     data = permutation(data,0)
-    data = round(data,rkey)
+    data = des_encription(data,rkey)
             
     data = np.roll(data,8)
     data = (permutation(data, 1))
 
-    if operate == 0:
+    if option == 0:
         print("Los datos encriptados son ", data)
 
-    if operate == 1:
+    if option == 1:
         print("Los datos desencriptados son ", data)
 
 main()
