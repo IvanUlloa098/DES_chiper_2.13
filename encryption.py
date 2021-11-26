@@ -104,7 +104,7 @@ def f_function(right,rkey):
 
     return xorstream
 
-def des_encription(data,rkey):
+def des_encryption(data,rkey):
     l0 = data[0:8]
     r0 = data[8:16]
 
@@ -145,7 +145,7 @@ def main():
     option = int(input("0 encriptar, 1 desencriptar >>"))
 
     data = permutation(data,0)
-    data = des_encription(data,rkey)
+    data = des_encryption(data,rkey)
             
     data = np.roll(data,8)
     data = (permutation(data, 1))
