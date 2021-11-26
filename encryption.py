@@ -16,24 +16,20 @@ EBox = [8, 2, 4, 1,
         7, 5, 3, 8]
 
 SBox =[
-		# S1
 		[0, 3, 
          1, 1,  
          0, 2,
          1, 2],
 
-		# S2
 		[1, 3, 
          1, 2,  
          0, 0,
          0, 3],
 
-		# S3
 		[0, 2, 
          3, 0,  
          0, 1],
 
-		# S4
 		[3, 3, 
          1, 0,  
          1, 2,
@@ -82,11 +78,11 @@ def sbox(sboxin):
     sboxin1 = sboxin[0:3]
     sboxout1 = sboxloopup(sboxin1, 1)
     sboxin2 = sboxin[3:6]
-    sboxout2 = sboxloopup(sboxin2, 2)
+    sboxout2 = sboxloopup(sboxin2, 1)
     sboxin3 = sboxin[6:9]
-    sboxout3 = sboxloopup(sboxin3, 3)
+    sboxout3 = sboxloopup(sboxin3, 1)
     sboxin4 = sboxin[9:12]
-    sboxout4 = sboxloopup(sboxin4, 4)
+    sboxout4 = sboxloopup(sboxin4, 1)
     
     sboxout = np.concatenate([sboxout1,sboxout2,sboxout3,sboxout4])
     return sboxout
@@ -140,31 +136,24 @@ def permutation(data,x):
 
 def main():
     key = ['1', '0', '1', '1', '0', '1', '1', '0', '0', '0', '1', '0']
-    #data = ['1', '1', '1', '1', '1', '1', '1', '0', '0', '1', '1', '1', '0', '0', '0', '1']
-    data = ['1', '0', '1', '1', '1', '1', '1', '1', '0', '1', '0', '1', '1', '1', '1', '1']
+    data = ['1', '1', '1', '1', '1', '1', '1', '0', '0', '1', '1', '1', '0', '0', '0', '1']
+    #data = ['1', '0', '1', '1', '1', '1', '1', '1', '0', '1', '0', '1', '1', '1', '0', '1']
 
     rkey = list(map(int, key))
     print(data,rkey)
 
-    operate = int(input("Choose 0 for encryption or Choose 1 for decryption "))
-    starttime = time.time()
+    operate = int(input("0 encriptar, 1 desencriptar "))
+
+    data = permutation(data,0)
+    data = round(data,rkey)
+            
+    data = np.roll(data,8)
+    data = (permutation(data, 1))
 
     if operate == 0:
-        data = permutation(data,0)
-        data = round(data,rkey)
-                
-        data = np.roll(data,8)
-        data = (permutation(data, 1))
-        print("Time taken to encrypt the data with DES is", time.time() - starttime)
-        print("Encrypted data is", data)
+        print("Los datos encriptados son ", data)
 
     if operate == 1:
-        data = permutation(data, 0)
-        data = round(data, rkey)
-
-        data = np.roll(data, 8)
-        data = (permutation(data, 1))
-        print("Time taken to decrypt the data with DES is", time.time() - starttime)
-        print("Decrypted data is", data)
+        print("Los datos desencriptados son ", data)
 
 main()
